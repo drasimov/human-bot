@@ -5,12 +5,18 @@
     position: relative;
     display: inline-block;
     border: 1px solid #000;
+    margin: 5px 0px;
 }
 .label{
     height: 20px;
     text-align: center;
     background: #cacaca;
     padding: 2px;
+    cursor: pointer;
+}
+.small-label{
+    height: 5px;
+    background: #303030;
     cursor: pointer;
 }
 .l-grid{
@@ -22,11 +28,4 @@
 }
 canvas{
     display: block;
-    width: 120px;
-    height: 120px;
 }
-.over{
-    position: absolute;
-    top: 0;
-    left: 0;
-display: none}

@@ -5,6 +5,8 @@ const B_N = 10;
 const B_S = [0,1,2,3,4,5,6,7,8,9];
 const B_C = Array(B_S.length)
 
+let write = false;
+
 // const canvas = document.getElementById('sketchpad');
 // const context = canvas.getContext('2d');
 
@@ -64,6 +66,9 @@ function grid(n){
 }
 function clean(n){
     $(`c${n}`).getContext('2d').clearRect(0, 0, 120, 120);
+    if(B_C[n]){
+        verify(n); 
+    }
 }
 function print(n){
     let context = $('c' + n).getContext('2d')
@@ -88,19 +93,23 @@ function populate(){
         str.push(`
             <div class="draw-wrap">
                 <div id="g${i}"></div>
-                <canvas id='c${i}'></canvas>
+                <canvas id='c${i}' height="120px" width="120px"></canvas>
+                <canvas id='c${i+B_N}' class="over" height="120px" width="120px"></canvas>
                 <div class="label" onClick="clean(${i})">${B_S[i]}</div>
-                <div class="label" onClick="verify(${i})">Check</div>
-
-                <canvas id='c${i+B_N}' class="over"></canvas>
+                <div id='l${i}' class="small-label" onClick="verify(${i})"></div>
             </div>
         `)
     }
     $("all").innerHTML = str.join("");
+    $("all").innerHTML += '<div id="control"><button onClick="writer()">Verify</button></div>';
+    for(let i=0; i<B_N; i++){
+        $(`c${i+B_N}`).style.display = "none";
+    }
 }
 
 function verify(n){
-    if(B_C[n]){
+    if(!B_C[n]){
+        clean(n+B_N)
         let arr = print(n);
         let context = $(`c${n+B_N}`).getContext('2d');
     
@@ -108,7 +117,28 @@ function verify(n){
             context.fillStyle = `rgba(0,0,0, ${arr[i]})`
             context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
         }
-        
+        $(`c${n+B_N}`).style.display = "block";
+        $(`l${n}`).style.background = "#00AA00";
+        $(`c${n}`).style.display = "none";
     }
+    else{
+        $(`c${n+B_N}`).style.display = "none";
+        $(`l${n}`).style.background = "#303030";
+        $(`c${n}`).style.display = "block";
+    }
+    B_C[n] = !B_C[n];
+}
 
+function writer(){
+    if(!write){
+        for(let i=0; i<B_N; i++){
+            verify(i);
+        }
+        $("control").innerHTML = `<button onClick="console.log('THIS SHOULD ADD DATA LINE'); writer()">Save</button><button onClick="writer()">Clear</button>`
+    }
+    else{
+        for(let i=0; i<B_N; i++){clean(i)};
+        $("control").innerHTML = `<div id="control"><button onClick="writer()">Verify</button></div>`
+    }
+    write = !write;
 }
