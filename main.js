@@ -1,8 +1,9 @@
-const G_N = 5;
+const G_N = 8;
 const G_D = 120/G_N;
 
 const B_N = 10;
 const B_S = [0,1,2,3,4,5,6,7,8,9];
+const B_C = Array(B_S.length)
 
 // const canvas = document.getElementById('sketchpad');
 // const context = canvas.getContext('2d');
@@ -12,8 +13,7 @@ window.addEventListener('load', function () {
 
     for(let i=0; i<B_N; i++){
         let canvas = $(`c${i}`);
-        let context = canvas.getContext('2d');
-    
+        let context = canvas.getContext('2d', { willReadFrequently: true });    
         var isIdle = true;
         context.lineWidth = 8.0;
     
@@ -62,7 +62,7 @@ const G_S = str.join("");
 function grid(n){
     $(`g${n}`).innerHTML += G_S;
 }
-function clear(n){
+function clean(n){
     $(`c${n}`).getContext('2d').clearRect(0, 0, 120, 120);
 }
 function print(n){
@@ -79,6 +79,7 @@ function print(n){
         arr.push((4*sum/(info.length*255)).toFixed(4));
     }
     console.log(arr);
+    return arr;
 }
 
 function populate(){
@@ -86,12 +87,28 @@ function populate(){
     for(let i=0; i<B_N; i++){
         str.push(`
             <div class="draw-wrap">
-                <div id = "g${i}"></div>
-                <canvas id='c${i}' width='120' height='120' style='border:1px solid #777'></canvas>
-                <div class="label">${B_S[i]}</div>
+                <div id="g${i}"></div>
+                <canvas id='c${i}'></canvas>
+                <div class="label" onClick="clean(${i})">${B_S[i]}</div>
+                <div class="label" onClick="verify(${i})">Check</div>
+
+                <canvas id='c${i+B_N}' class="over"></canvas>
             </div>
         `)
     }
     $("all").innerHTML = str.join("");
 }
-// <button onClick="print(${i})">Get Pixels</button>
+
+function verify(n){
+    if(B_C[n]){
+        let arr = print(n);
+        let context = $(`c${n+B_N}`).getContext('2d');
+    
+        for(let i=0; i<G_N**2; i++){
+            context.fillStyle = `rgba(0,0,0, ${arr[i]})`
+            context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
+        }
+        
+    }
+
+}

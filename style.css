@@ -1,17 +1,32 @@
-h1{
-    font-family:'Courier New', Courier, monospace;
+*{
+    font-family: Arial, Helvetica, sans-serif;
 }
 .draw-wrap{
     position: relative;
     display: inline-block;
+    border: 1px solid #000;
 }
 .label{
     height: 20px;
     text-align: center;
-    background: #eaeaea;
+    background: #cacaca;
+    padding: 2px;
+    cursor: pointer;
 }
 .l-grid{
     position: absolute;
-    border: .5px solid #eaeaea;
+    border-top: 1px solid #eaeaea;
+    border-left: 1px solid #eaeaea;
     z-index:-1;
-}   
+    pointer-events: none;
+}
+canvas{
+    display: block;
+    width: 120px;
+    height: 120px;
+}
+.over{
+    position: absolute;
+    top: 0;
+    left: 0;
+display: none}
