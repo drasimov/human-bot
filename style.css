@@ -1,3 +1,17 @@
 h1{
     font-family:'Courier New', Courier, monospace;
 }
+.draw-wrap{
+    position: relative;
+    display: inline-block;
+}
+.label{
+    height: 20px;
+    text-align: center;
+    background: #eaeaea;
+}
+.l-grid{
+    position: absolute;
+    border: .5px solid #eaeaea;
+    z-index:-1;
+}   
