@@ -17,7 +17,9 @@ if(localStorage.uuid == undefined){
     localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
 }
 else{
-    DATA = JSON.parse(localStorage.data);
+    if(localStorage.data){
+        DATA = JSON.parse(localStorage.data);
+    }
 }
 
 window.addEventListener('load', function () {
