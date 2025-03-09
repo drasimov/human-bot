@@ -137,8 +137,8 @@ function verify(n){
         let arr = print(n);
         let context = $(`c${n+B_N}`).getContext('2d');
     
-        for(let i=1; i<=G_N**2; i++){
-            context.fillStyle = `rgba(0,0,0, ${arr[i]})`
+        for(let i=0; i<=G_N**2; i++){
+            context.fillStyle = `rgba(0,0,0, ${arr[i+1]})`
             context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
         }
         $(`c${n+B_N}`).style.display = "block";
