@@ -5,10 +5,20 @@ const B_N = 10;
 const B_S = [0,1,2,3,4,5,6,7,8,9];
 const B_C = Array(B_S.length)
 
+
+let DATA = [];
+
 let write = false;
 
 // const canvas = document.getElementById('sketchpad');
 // const context = canvas.getContext('2d');
+if(localStorage.uuid == undefined){
+    localStorage.clear();
+    localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
+}
+else{
+    DATA = JSON.parse(localStorage.data);
+}
 
 window.addEventListener('load', function () {
     populate();
@@ -74,6 +84,7 @@ function print(n){
     let context = $('c' + n).getContext('2d')
     let arr = [];
     let info = [];
+    arr.push(n)
     for(let i=0; i<G_N**2; i++){
         info = context.getImageData(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D).data;
 
@@ -81,7 +92,7 @@ function print(n){
         for(let j=0; j<info.length/4; j++){
             sum += info[j*4+3];
         }
-        arr.push((4*sum/(info.length*255)).toFixed(4));
+        arr.push(4*sum/(info.length*255));
     }
     console.log(arr);
     return arr;
@@ -105,6 +116,19 @@ function populate(){
     for(let i=0; i<B_N; i++){
         $(`c${i+B_N}`).style.display = "none";
     }
+    $
+
+    str = [];
+    str.push(`<tr><th>Label</th><th colspan="${G_N**2}">Pixel Data</th></tr>`);
+    for(let i=0; i<DATA.length; i++){
+        str.push(`<tr><td>${DATA[i][0]}</td>`);
+        for(let j=1; j<=G_N**2; j++){
+            str.push(`<td>${DATA[i][j].toFixed(2)}</td>`);
+        }
+        str.push(`</tr>`);
+    }
+
+    $("data").innerHTML = str.join("");
 }
 
 function verify(n){
@@ -132,13 +156,44 @@ function verify(n){
 function writer(){
     if(!write){
         for(let i=0; i<B_N; i++){
-            verify(i);
+            if(!B_C[i]){
+                verify(i);
+            }
         }
-        $("control").innerHTML = `<button onClick="console.log('THIS SHOULD ADD DATA LINE'); writer()">Save</button><button onClick="writer()">Clear</button>`
+        $("control").innerHTML = `<button onClick="save(); writer()">Save</button><button onClick="writer()">Clear</button>`
     }
     else{
         for(let i=0; i<B_N; i++){clean(i)};
         $("control").innerHTML = `<div id="control"><button onClick="writer()">Verify</button></div>`
     }
     write = !write;
+}
+
+function save(){
+    let str = [];
+    for(let i=0; i<B_N; i++){
+        let d = print(i);
+        DATA.push(d);
+
+        str.push(`<tr><td>${d[0]}</td>`);
+        for(let j=1; j<=G_N**2; j++){
+            str.push(`<td>${d[j].toFixed(2)}</td>`);
+        }
+        str.push(`</tr>`);
+    }
+
+    $("data").innerHTML += str.join("");
+    localStorage.data = JSON.stringify(DATA);
+}
+
+function download(){
+    csvContent
+    var encodedUri = encodeURI(csvContent);
+    var link = document.createElement("a");
+    link.setAttribute("href", encodedUri);
+    link.setAttribute("download", "my_data.csv");
+    document.body.appendChild(link); // Required for FF
+
+    link.click(); // This will download the data file named "my_data.csv".
+
 }
