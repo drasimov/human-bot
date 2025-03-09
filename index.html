@@ -4,9 +4,26 @@
         <link rel="stylesheet" href="style.css">
     </head>
     <body>
-        <span class="title">human-bot</span><span class="desc"> where you and your friends generate neural network training data</span>
-        <div id="all"></div>
-        <table id="data"></table>
+        <span class="title">human-bot </span><span class="desc">where you and your friends generate neural network training data</span>
+        <hr>
+        <p>Hello Dear Volunteer (or Voluntold),</p>
+        <p>The characters you handwrite here will be processed into a form easier for a <a href="http://neuralnetworksanddeeplearning.com/">neural network</a> to understand. Since each character you write is also labeled with what character it is supposed to represent, this data can be used to "teach" a neural network how to recognize handwritten characters. Eventually, this neural network should be able to recognize handwritten digits it hasn't seen before at some level of accuracy. Thus, thank you for your contribution to our neural network.</p>
+        <br>
+        <div class="box-label"><span>Writing box</span></div>
+        <div id="all" class="box"></div>
+        <div class="box-wrap">
+            <div class="box-label"><span>Info box</span></div>
+            <div id="info" class="box"></div>    
+        </div>
+        <div class="box-wrap">
+            <div class="box-label"><span>Control box</span></div>
+            <div id="control" class="box"><button onClick="writer()">Verify</button></div>    
+        </div>
+        <div class="box-label"><span>Data box</span></div>
+        <div class="box box-data">
+            This table shows all the data you have collected. <button onClick="download()">Download as csv</button><button id="showDataLabel" onClick="toggleData()">Show Data</button>
+            <div class="wrap-data"><table id="data"></table></div>
+        </div>
         <script src="main.js"></script>
     </body>
 </html>

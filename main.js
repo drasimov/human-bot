@@ -102,17 +102,17 @@ function populate(){
     str = [];
     for(let i=0; i<B_N; i++){
         str.push(`
-            <div class="draw-wrap">
-                <div id="g${i}"></div>
-                <canvas id='c${i}' height="120px" width="120px"></canvas>
-                <canvas id='c${i+B_N}' class="over" height="120px" width="120px"></canvas>
-                <div class="label" onClick="clean(${i})">${B_S[i]}</div>
-                <div id='l${i}' class="small-label" onClick="verify(${i})"></div>
-            </div>
+                <div class="draw-wrap">
+                    <div id="g${i}"></div>
+                    <canvas id="c${i}" height="120px" width="120px"></canvas>
+                    <canvas id="c${i+B_N}" class="over" height="120px" width="120px"></canvas>
+                    <div class="label" onClick="clean(${i})">${B_S[i]}</div>
+                    <div id='l${i}' class="small-label" onClick="verify(${i})"></div>
+                </div>
         `)
     }
+    $("info").innerHTML = `Session name: '<i>${localStorage.uuid}</i>', sets recorded: ${DATA.length/B_N}`
     $("all").innerHTML = str.join("");
-    $("all").innerHTML += '<div id="control"><button onClick="writer()">Verify</button></div>';
     for(let i=0; i<B_N; i++){
         $(`c${i+B_N}`).style.display = "none";
     }
@@ -137,7 +137,7 @@ function verify(n){
         let arr = print(n);
         let context = $(`c${n+B_N}`).getContext('2d');
     
-        for(let i=0; i<G_N**2; i++){
+        for(let i=1; i<=G_N**2; i++){
             context.fillStyle = `rgba(0,0,0, ${arr[i]})`
             context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
         }
@@ -166,7 +166,7 @@ function writer(){
         for(let i=0; i<B_N; i++){clean(i)};
         $("control").innerHTML = `<div id="control"><button onClick="writer()">Verify</button></div>`
     }
-    write = !write;
+    write = !write; 
 }
 
 function save(){
@@ -183,17 +183,33 @@ function save(){
     }
 
     $("data").innerHTML += str.join("");
+    $("info").innerHTML = `Session name: ${localStorage.uuid}, sets recorded: ${DATA.length/B_N}`
+
     localStorage.data = JSON.stringify(DATA);
 }
 
+let showData = false;
+$("data").style.display = "none";
+function toggleData(){
+    showData = !showData;
+    $("data").style.display = showData ? "block":"none";
+    $("showDataLabel").innerHTML = showData ? "Hide Data":"Show Data";
+}
+
+// https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
 function download(){
-    csvContent
+    let csvContent = "data:text/csv;charset=utf-8,";
+
+    DATA.forEach(function(rowArray) {
+        let row = rowArray.join(",");
+        csvContent += row + "\r\n";
+    });
+
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", "my_data.csv");
-    document.body.appendChild(link); // Required for FF
+    link.setAttribute("download", `${localStorage.uuid}(${DATA.length/B_N}sets)-handwritten`);
+    document.body.appendChild(link); 
 
-    link.click(); // This will download the data file named "my_data.csv".
-
+    link.click(); 
 }
