@@ -122,12 +122,14 @@ function populate(){
 
     str = [];
     str.push(`<tr><th>Label</th><th colspan="${G_N**2}">Pixel Data</th></tr>`);
-    for(let i=0; i<DATA.length; i++){
-        str.push(`<tr><td>${DATA[i][0]}</td>`);
-        for(let j=1; j<=G_N**2; j++){
-            str.push(`<td>${DATA[i][j].toFixed(2)}</td>`);
-        }
-        str.push(`</tr>`);
+    if(DATA){
+        for(let i=0; i<DATA.length; i++){
+            str.push(`<tr><td>${DATA[i][0]}</td>`);
+            for(let j=1; j<=G_N**2; j++){
+                str.push(`<td>${DATA[i][j].toFixed(2)}</td>`);
+            }
+            str.push(`</tr>`);
+        }    
     }
 
     $("data").innerHTML = str.join("");
