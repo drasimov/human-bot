@@ -91,7 +91,7 @@ function print(n){
     if(RAW){
         info=context.getImageData(0,0,120,120).data;
         for(let i=0; i<G_N**2; i++){
-            arr.push(info[i*4+3]/255);
+            arr.push((info[i*4+3]/255).toFixed(4));
         }
     }
     else{
