@@ -85,24 +85,27 @@ function clean(n){
 }
 function print(n){
     let context = $('c' + n).getContext('2d')
-    let arr = [];
+    const arr = new Uint8Array(G_N ** 2 + 1);
+
+    // TODO: optimize this
     let info = [];
-    arr.push(n)
+    arr[0] = n;
     if(RAW){
         info=context.getImageData(0,0,120,120).data;
         for(let i=0; i<G_N**2; i++){
-            arr.push((info[i*4+3]/255).toFixed(4));
+            arr[i+1] = info[i*4+3];
         }
     }
     else{
         for(let i=0; i<G_N**2; i++){
+            // TODO: optimize this
             info = context.getImageData(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D).data;
     
             let sum = 0;
             for(let j=0; j<info.length/4; j++){
                 sum += info[j*4+3];
             }
-            arr.push(4*sum/(info.length*255));
+            arr[i+1] = Math.floor(4*sum/info.length);
         }    
     }
     console.log(arr);
@@ -188,11 +191,11 @@ function save(){
     let str = [];
     for(let i=0; i<B_N; i++){
         let d = print(i);
-        DATA.push(d);
+        DATA.push(Array.from(d));
 
         str.push(`<tr><td>${d[0]}</td>`);
         for(let j=1; j<=G_N**2; j++){
-            str.push(`<td>${d[j].toFixed(2)}</td>`);
+            str.push(`<td>${d[j]}</td>`);
         }
         str.push(`</tr>`);
     }
@@ -227,4 +230,5 @@ function download(){
     document.body.appendChild(link); 
 
     link.click(); 
+    // TODO: file handle with Blob
 }
