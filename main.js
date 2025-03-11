@@ -1,5 +1,6 @@
-const G_N = 8;
+const G_N = 120;
 const G_D = 120/G_N;
+const RAW = G_N==120 ? 1:0;
 
 const B_N = 10;
 const B_S = [0,1,2,3,4,5,6,7,8,9];
@@ -59,7 +60,7 @@ window.addEventListener('load', function () {
         canvas.addEventListener('mousemove', drawmove, false);
         canvas.addEventListener('mouseup', drawend, false);
       
-        grid(i);
+        if(!RAW){grid(i)};
     }
 }, false);
 
@@ -87,14 +88,22 @@ function print(n){
     let arr = [];
     let info = [];
     arr.push(n)
-    for(let i=0; i<G_N**2; i++){
-        info = context.getImageData(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D).data;
-
-        let sum = 0;
-        for(let j=0; j<info.length/4; j++){
-            sum += info[j*4+3];
+    if(RAW){
+        info=context.getImageData(0,0,120,120).data;
+        for(let i=0; i<G_N**2; i++){
+            arr.push(info[i*4+3]/255);
         }
-        arr.push(4*sum/(info.length*255));
+    }
+    else{
+        for(let i=0; i<G_N**2; i++){
+            info = context.getImageData(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D).data;
+    
+            let sum = 0;
+            for(let j=0; j<info.length/4; j++){
+                sum += info[j*4+3];
+            }
+            arr.push(4*sum/(info.length*255));
+        }    
     }
     console.log(arr);
     return arr;
@@ -137,22 +146,24 @@ function populate(){
 
 function verify(n){
     if(!B_C[n]){
-        clean(n+B_N)
-        let arr = print(n);
-        let context = $(`c${n+B_N}`).getContext('2d');
-    
-        for(let i=0; i<=G_N**2; i++){
-            context.fillStyle = `rgba(0,0,0, ${arr[i+1]})`
-            context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
+        if(!RAW){
+            clean(n+B_N)
+            let arr = print(n);
+            let context = $(`c${n+B_N}`).getContext('2d');
+        
+            for(let i=0; i<=G_N**2; i++){
+                context.fillStyle = `rgba(0,0,0, ${arr[i+1]})`
+                context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
+            }    
+            $(`c${n+B_N}`).style.display = "block";
+            $(`c${n}`).style.display = "none";
         }
-        $(`c${n+B_N}`).style.display = "block";
         $(`l${n}`).style.background = "#00AA00";
-        $(`c${n}`).style.display = "none";
     }
     else{
         $(`c${n+B_N}`).style.display = "none";
-        $(`l${n}`).style.background = "#303030";
         $(`c${n}`).style.display = "block";
+        $(`l${n}`).style.background = "#303030";
     }
     B_C[n] = !B_C[n];
 }
