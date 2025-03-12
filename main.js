@@ -247,8 +247,20 @@ function toggleData(){
     $("data").style.display = showData ? "block":"none";
     $("dataControls").style.display = showData ? "block":"none";
     $("showDataLabel").innerHTML = showData ? "Hide Data":"Show Data";
+    if($("dataAccess").value==0){
+        $("dataInfo").innerHTML = `(enter number 1 to ${DATA.length/B_N})`;
+    }
+    else{
+        $("dataInfo").innerHTML = `(of total ${DATA.length/B_N}, found at rows ${($("dataAccess").value-1)*B_N+1} to ${($("dataAccess").value)*B_N})`;
+    }
 }
 function updateData(){
+    if($("dataAccess").value==0){
+        $("dataInfo").innerHTML = `(enter number 1 to ${DATA.length/B_N})`;
+    }
+    else{
+        $("dataInfo").innerHTML = `(of total ${DATA.length/B_N}, found at rows ${($("dataAccess").value-1)*B_N+1} to ${($("dataAccess").value)*B_N})`;
+    }
     let context;
     let test; 
     let pixels;
