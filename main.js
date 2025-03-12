@@ -13,17 +13,18 @@ let write = false;
 
 // const canvas = document.getElementById('sketchpad');
 // const context = canvas.getContext('2d');
-if(localStorage.uuid == undefined){
-    localStorage.clear();
-    localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
-}
-else{
-    if(localStorage.data){
-        DATA = JSON.parse(localStorage.data);
-    }
-}
 
 window.addEventListener('load', function () {
+    if(localStorage.uuid == undefined){
+        localStorage.clear();
+        localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
+    }
+    else{
+        if(localStorage.data){
+            DATA = JSON.parse(localStorage.data);
+        }
+    }
+    
     populate();
 
     for(let i=0; i<B_N; i++){
