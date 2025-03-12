@@ -144,7 +144,16 @@ function populate(){
     $
 
     str = [];
-    str.push(`<tr><th>Label</th><th colspan="${G_N**2}">Pixel Data</th></tr>`);
+    for(let i=0; i<B_N; i++){
+        str.push(`
+                <div class="draw-wrap">
+                    <canvas id="c${i+2*B_N}" class="over" height="120px" width="120px"></canvas>
+                    <div class="label" onClick="clean(${i})">${B_S[i]}</div>
+                    <div id='l${i}' class="small-label" onClick="verify(${i})"></div>
+                </div>
+        `)
+    }
+
     if(DATA&&!RAW){
         for(let i=0; i<DATA.length; i++){
             str.push(`<tr><td>${DATA[i][0]}</td>`);
@@ -206,11 +215,10 @@ function writer(){
 }
 
 function save(){
-    let str = [];
-        for(let i=0; i<B_N; i++){
-            let d = print(i);
-            DATA.push(Array.from(d));
-        }       
+    for(let i=0; i<B_N; i++){
+        let d = print(i);
+        DATA.push(Array.from(d));
+    }       
 
     $("info").innerHTML = `Session name: ${localStorage.uuid}, sets of ${B_S.join("")} recorded: ${DATA.length/B_N}`
 
@@ -220,6 +228,10 @@ function save(){
     catch (e) {
         alert("Session storage is full! Please reset session before saving.")
     }
+    if(showData){
+        $("dataAccess").min = 1;
+        $("dataAccess").max = DATA.length/B_N;
+    }
 }
 
 let showData = false;
@@ -228,6 +240,24 @@ function toggleData(){
     showData = !showData;
     $("data").style.display = showData ? "block":"none";
     $("showDataLabel").innerHTML = showData ? "Hide Data":"Show Data";
+}
+function updateData(){
+    let context;
+    let test; 
+    let pixels;
+    let arr;
+    for(let c=0; c<B_N; c++){
+        clean(c);
+        context = $(`c${c+2*B_N}`).getContext('2d');
+        test = context.createImageData(120,120);
+        pixels = test.data;
+        arr = DATA[($("dataAccess").value-1)*B_N+c];
+    
+        for(let i=0; i<=G_N**2; i++){
+            pixels[4*i+3] = arr[i+1];
+        }    
+        context.putImageData(test,0,0);
+    }
 }
 
 // https://stackoverflow.com/questions/14964035/how-to-export-javascript-array-info-to-csv-on-client-side
