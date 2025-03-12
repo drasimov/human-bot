@@ -208,7 +208,7 @@ function writer(){
                 verify(i);
             }
         }
-        $("control").innerHTML = `<button onClick="save(); writer()">Save</button><button onClick="writer()">Clear</button>`
+        $("control").innerHTML = `<button onClick="save(); writer()">Save</button> <button onClick="writer()">Clear</button>`
     }
     else{
         for(let i=0; i<B_N; i++){clean(i)};
