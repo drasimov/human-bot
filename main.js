@@ -5,6 +5,7 @@ const RAW = G_N==120 ? 1:0;
 // const B_S = [0,1,2,3,4,5,6,7,8,9];
 let B_N = 0;
 let B_S = [];
+let B_C = 0;
 
 
 let DATA = [];
@@ -20,10 +21,10 @@ window.addEventListener('load', function () {
         localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
         B_S = prompt("Enter your character set (e.g. 012345 or ABCD):").split('');
         B_N = B_S.length;
-        localStorage.set = B_S;
+        localStorage.set = JSON.stringify(B_S);
     }
     else{
-        B_S = localStorage.set;
+        B_S = JSON.parse(localStorage.set);
         B_N = B_S.length;
         if(localStorage.data){
             DATA = JSON.parse(localStorage.data);
@@ -75,8 +76,10 @@ function $(x){
 }
 
 let str = [];
-for(let i=0; i<G_N**2; i++){
-    str.push(`<div class="l-grid" style="top: ${Math.floor(i/G_N)*G_D}px; left: ${i%G_N*G_D}px; width: ${G_D}px; height: ${G_D}px"></div>`)
+if(!RAW){
+    for(let i=0; i<G_N**2; i++){
+        str.push(`<div class="l-grid" style="top: ${Math.floor(i/G_N)*G_D}px; left: ${i%G_N*G_D}px; width: ${G_D}px; height: ${G_D}px"></div>`)
+    }    
 }
 const G_S = str.join("");
 
@@ -140,7 +143,7 @@ function populate(){
 
     str = [];
     str.push(`<tr><th>Label</th><th colspan="${G_N**2}">Pixel Data</th></tr>`);
-    if(DATA){
+    if(DATA&&!RAW){
         for(let i=0; i<DATA.length; i++){
             str.push(`<tr><td>${DATA[i][0]}</td>`);
             for(let j=1; j<=G_N**2; j++){
@@ -199,14 +202,14 @@ function save(){
         let d = print(i);
         DATA.push(Array.from(d));
 
-        str.push(`<tr><td>${d[0]}</td>`);
-        for(let j=1; j<=G_N**2; j++){
-            str.push(`<td>${d[j]}</td>`);
-        }
-        str.push(`</tr>`);
+        // str.push(`<tr><td>${d[0]}</td>`);
+        // for(let j=1; j<=G_N**2; j++){
+        //     str.push(`<td>${d[j]}</td>`);
+        // }
+        // str.push(`</tr>`);
     }
 
-    $("data").innerHTML += str.join("");
+    // $("data").innerHTML += str.join("");
     $("info").innerHTML = `Session name: ${localStorage.uuid}, sets recorded: ${DATA.length/B_N}`
 
     localStorage.data = JSON.stringify(DATA);
