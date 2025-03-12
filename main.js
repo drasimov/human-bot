@@ -18,42 +18,6 @@ let write = false;
 window.addEventListener('load', function () {
     session(false);
     populate();
-    for(let i=0; i<B_N; i++){
-        let canvas = $(`c${i}`);
-        let context = canvas.getContext('2d', { willReadFrequently: true });    
-        var isIdle = true;
-        context.lineWidth = 8.0;
-    
-        // https://stackoverflow.com/questions/16057256/draw-on-a-canvas-via-mouse-and-touch
-        function drawstart(event) {
-            context.beginPath();
-            context.moveTo(event.pageX - canvas.getBoundingClientRect().left, event.pageY - canvas.getBoundingClientRect().top);
-            isIdle = false;
-        }
-        function drawmove(event) {
-            if (isIdle) return;
-            context.lineTo(event.pageX - canvas.getBoundingClientRect().left, event.pageY - canvas.getBoundingClientRect().top);
-            context.stroke();
-        }
-        function drawend(event) {
-            if (isIdle) return;
-            drawmove(event);
-            isIdle = true;
-        }
-        function touchstart(event) { drawstart(event.touches[0]) }
-        function touchmove(event) { drawmove(event.touches[0]); event.preventDefault(); }
-        function touchend(event) { drawend(event.changedTouches[0]) }
-      
-        canvas.addEventListener('touchstart', touchstart, false);
-        canvas.addEventListener('touchmove', touchmove, false);
-        canvas.addEventListener('touchend', touchend, false);        
-      
-        canvas.addEventListener('mousedown', drawstart, false);
-        canvas.addEventListener('mousemove', drawmove, false);
-        canvas.addEventListener('mouseup', drawend, false);
-      
-        if(!RAW){grid(i)};
-    }
 }, false);
 
 function $(x){
@@ -168,6 +132,43 @@ function populate(){
     }
 
     $("data").innerHTML = str.join("");
+
+    for(let i=0; i<B_N; i++){
+        let canvas = $(`c${i}`);
+        let context = canvas.getContext('2d', { willReadFrequently: true });    
+        var isIdle = true;
+        context.lineWidth = 8.0;
+    
+        // https://stackoverflow.com/questions/16057256/draw-on-a-canvas-via-mouse-and-touch
+        function drawstart(event) {
+            context.beginPath();
+            context.moveTo(event.pageX - canvas.getBoundingClientRect().left, event.pageY - canvas.getBoundingClientRect().top);
+            isIdle = false;
+        }
+        function drawmove(event) {
+            if (isIdle) return;
+            context.lineTo(event.pageX - canvas.getBoundingClientRect().left, event.pageY - canvas.getBoundingClientRect().top);
+            context.stroke();
+        }
+        function drawend(event) {
+            if (isIdle) return;
+            drawmove(event);
+            isIdle = true;
+        }
+        function touchstart(event) { drawstart(event.touches[0]) }
+        function touchmove(event) { drawmove(event.touches[0]); event.preventDefault(); }
+        function touchend(event) { drawend(event.changedTouches[0]) }
+      
+        canvas.addEventListener('touchstart', touchstart, false);
+        canvas.addEventListener('touchmove', touchmove, false);
+        canvas.addEventListener('touchend', touchend, false);        
+      
+        canvas.addEventListener('mousedown', drawstart, false);
+        canvas.addEventListener('mousemove', drawmove, false);
+        canvas.addEventListener('mouseup', drawend, false);
+      
+        if(!RAW){grid(i)};
+    }
 }
 
 function verify(n){
