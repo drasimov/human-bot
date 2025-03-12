@@ -2,8 +2,8 @@ const G_N = 120;
 const G_D = 120/G_N;
 const RAW = G_N==120 ? 1:0;
 
-const B_N = 10;
 const B_S = [0,1,2,3,4,5,6,7,8,9];
+const B_N = 10;
 const B_C = Array(B_S.length)
 
 
