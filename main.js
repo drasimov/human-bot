@@ -120,16 +120,6 @@ function populate(){
         `)
     }
 
-    if(DATA&&!RAW){
-        for(let i=0; i<DATA.length; i++){
-            str.push(`<tr><td>${DATA[i][0]}</td>`);
-            for(let j=1; j<=G_N**2; j++){
-                str.push(`<td>${DATA[i][j].toFixed(2)}</td>`);
-            }
-            str.push(`</tr>`);
-        }    
-    }
-
     $("data").innerHTML = str.join("");
 
     for(let i=0; i<B_N; i++){
@@ -234,6 +224,12 @@ function save(){
     if(showData){
         $("dataAccess").min = 1;
         $("dataAccess").max = DATA.length/B_N;
+        if($("dataAccess").value==0){
+            $("dataInfo").innerHTML = `(enter number 1 to ${DATA.length/B_N})`;
+        }
+        else{
+            $("dataInfo").innerHTML = `(of total ${DATA.length/B_N}, found at rows ${($("dataAccess").value-1)*B_N+1} to ${($("dataAccess").value)*B_N})`;
+        }    
     }
 }
 
@@ -266,16 +262,25 @@ function updateData(){
     let pixels;
     let arr;
     for(let c=0; c<B_N; c++){
-        clean(c);
+        clean(c+2*B_N);
         context = $(`c${c+2*B_N}`).getContext('2d');
-        test = context.createImageData(120,120);
-        pixels = test.data;
         arr = DATA[($("dataAccess").value-1)*B_N+c];
-    
-        for(let i=0; i<=G_N**2; i++){
-            pixels[4*i+3] = arr[i+1];
-        }    
-        context.putImageData(test,0,0);
+
+        if(RAW){
+            test = context.createImageData(120,120);
+            pixels = test.data;
+        
+            for(let i=0; i<=G_N**2; i++){
+                pixels[4*i+3] = arr[i+1];
+            }    
+            context.putImageData(test,0,0);    
+        }
+        else{
+            for(let i=0; i<=G_N**2; i++){
+                context.fillStyle = `rgba(0,0,0, ${arr[i+1]/255})`
+                context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
+            }
+        }
     }
 }
 
