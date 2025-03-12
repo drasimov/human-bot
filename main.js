@@ -239,6 +239,7 @@ function save(){
 
 let showData = false;
 $("data").style.display = "none";
+$("dataControls").style.display = "none";
 function toggleData(){
     showData = !showData;
     $("dataAccess").min = 1;
