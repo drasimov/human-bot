@@ -23,7 +23,7 @@
         </div>
         <div class="box-label"><span>Data box</span></div>
         <div class="box box-data">
-            This table shows all the data you have collected. <button onClick="download()">Download as csv</button><button id="showDataLabel" onClick="toggleData()">Show Data</button><button onClick="download(); localStorage.clear(); window.location.reload()">Reset Session</button>
+            This table shows all the data you have collected. <button onClick="download()">Download as csv</button><button id="showDataLabel" onClick="toggleData()">Show Data</button><button onClick="download(); session(true)">Reset Session</button>
             <div class="wrap-data"><table id="data"></table></div>
         </div>
         <script src="main.js"></script>

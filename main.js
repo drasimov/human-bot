@@ -16,23 +16,8 @@ let write = false;
 // const context = canvas.getContext('2d');
 
 window.addEventListener('load', function () {
-    if(localStorage.uuid == undefined){
-        localStorage.clear();
-        localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
-        B_S = prompt("Enter your character set (e.g. 012345 or ABCD):").split('');
-        localStorage.set = JSON.stringify(B_S);
-    }
-    else{
-        B_S = JSON.parse(localStorage.set);
-        if(localStorage.data){
-            DATA = JSON.parse(localStorage.data);
-        }
-    }
-    B_N = B_S.length;
-    B_C = new Array(B_S.length)
-    
+    session(false);
     populate();
-
     for(let i=0; i<B_N; i++){
         let canvas = $(`c${i}`);
         let context = canvas.getContext('2d', { willReadFrequently: true });    
@@ -83,6 +68,25 @@ if(!RAW){
 }
 const G_S = str.join("");
 
+function session(clear){
+    if(clear || localStorage.uuid == undefined){
+        DATA = [];
+        localStorage.clear();
+        localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
+        B_S = prompt("Enter your character set (e.g. 012345 or ABCD):").split('');
+        localStorage.set = JSON.stringify(B_S);
+    }
+    else{
+        B_S = JSON.parse(localStorage.set);
+        if(localStorage.data){
+            DATA = JSON.parse(localStorage.data);
+        }
+    }
+    B_N = B_S.length;
+    B_C = new Array(B_S.length)
+
+    $("info").innerHTML = `Session name: ${localStorage.uuid}, sets of ${B_S.join("")} recorded: ${DATA.length/B_N}`
+}
 function grid(n){
     $(`g${n}`).innerHTML += G_S;
 }
@@ -133,7 +137,6 @@ function populate(){
                 </div>
         `)
     }
-    $("info").innerHTML = `Session name: '<i>${localStorage.uuid}</i>', sets recorded: ${DATA.length/B_N}`
     $("all").innerHTML = str.join("");
     for(let i=0; i<B_N; i++){
         $(`c${i+B_N}`).style.display = "none";
@@ -163,7 +166,7 @@ function verify(n){
 
         if(!RAW){        
             for(let i=0; i<=G_N**2; i++){
-                context.fillStyle = `rgba(0,0,0, ${arr[i+1]})`
+                context.fillStyle = `rgba(0,0,0, ${arr[i+1]/255})`
                 context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
             }    
         }else{
