@@ -2,9 +2,9 @@ const G_N = 120;
 const G_D = 120/G_N;
 const RAW = G_N==120 ? 1:0;
 
-const B_S = [0,1,2,3,4,5,6,7,8,9];
-const B_N = 10;
-const B_C = Array(B_S.length)
+// const B_S = [0,1,2,3,4,5,6,7,8,9];
+let B_N = 0;
+let B_S = [];
 
 
 let DATA = [];
@@ -18,8 +18,13 @@ window.addEventListener('load', function () {
     if(localStorage.uuid == undefined){
         localStorage.clear();
         localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
+        B_S = prompt("Enter your character set (e.g. 012345 or ABCD):").split('');
+        B_N = B_S.length;
+        localStorage.set = B_S;
     }
     else{
+        B_S = localStorage.set;
+        B_N = B_S.length;
         if(localStorage.data){
             DATA = JSON.parse(localStorage.data);
         }
