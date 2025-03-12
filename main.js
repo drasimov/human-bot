@@ -241,7 +241,10 @@ let showData = false;
 $("data").style.display = "none";
 function toggleData(){
     showData = !showData;
+    $("dataAccess").min = 1;
+    $("dataAccess").max = DATA.length/B_N;
     $("data").style.display = showData ? "block":"none";
+    $("dataControls").style.display = showData ? "block":"none";
     $("showDataLabel").innerHTML = showData ? "Hide Data":"Show Data";
 }
 function updateData(){
