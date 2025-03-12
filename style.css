@@ -54,12 +54,13 @@ button{
     text-align: center;
     background: #cacaca;
     padding: 2px;
+}
+.pointer{
     cursor: pointer;
 }
 .small-label{
     height: 5px;
     background: #303030;
-    cursor: pointer;
 }
 .l-grid{
     position: absolute;

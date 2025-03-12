@@ -98,8 +98,8 @@ function populate(){
                     <div id="g${i}"></div>
                     <canvas id="c${i}" height="120px" width="120px"></canvas>
                     <canvas id="c${i+B_N}" class="over" height="120px" width="120px"></canvas>
-                    <div class="label" onClick="clean(${i})">${B_S[i]}</div>
-                    <div id='l${i}' class="small-label" onClick="verify(${i})"></div>
+                    <div class="label pointer" onClick="clean(${i})">${B_S[i]}</div>
+                    <div id='l${i}' class="small-label pointer" onClick="verify(${i})"></div>
                 </div>
         `)
     }
@@ -114,8 +114,8 @@ function populate(){
         str.push(`
                 <div class="draw-wrap">
                     <canvas id="c${i+2*B_N}" class="over" height="120px" width="120px"></canvas>
-                    <div class="label" onClick="clean(${i})">${B_S[i]}</div>
-                    <div id='l${i}' class="small-label" onClick="verify(${i})"></div>
+                    <div class="label noclick">${B_S[i]}</div>
+                    <div class="small-label"></div>
                 </div>
         `)
     }
