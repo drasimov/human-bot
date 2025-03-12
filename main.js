@@ -5,7 +5,7 @@ const RAW = G_N==120 ? 1:0;
 // const B_S = [0,1,2,3,4,5,6,7,8,9];
 let B_N = 0;
 let B_S = [];
-let B_C = 0;
+let B_C = [];
 
 
 let DATA = [];
@@ -20,16 +20,16 @@ window.addEventListener('load', function () {
         localStorage.clear();
         localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
         B_S = prompt("Enter your character set (e.g. 012345 or ABCD):").split('');
-        B_N = B_S.length;
         localStorage.set = JSON.stringify(B_S);
     }
     else{
         B_S = JSON.parse(localStorage.set);
-        B_N = B_S.length;
         if(localStorage.data){
             DATA = JSON.parse(localStorage.data);
         }
     }
+    B_N = B_S.length;
+    B_C = new Array(B_S.length)
     
     populate();
 
@@ -117,7 +117,6 @@ function print(n){
             arr[i+1] = Math.floor(4*sum/info.length);
         }    
     }
-    console.log(arr);
     return arr;
 }
 
@@ -158,18 +157,25 @@ function populate(){
 
 function verify(n){
     if(!B_C[n]){
-        if(!RAW){
-            clean(n+B_N)
-            let arr = print(n);
-            let context = $(`c${n+B_N}`).getContext('2d');
-        
+        clean(n+B_N)
+        let arr = print(n);
+        let context = $(`c${n+B_N}`).getContext('2d');
+
+        if(!RAW){        
             for(let i=0; i<=G_N**2; i++){
                 context.fillStyle = `rgba(0,0,0, ${arr[i+1]})`
                 context.fillRect(i%G_N*G_D, Math.floor(i/G_N)*G_D, G_D, G_D);
             }    
-            $(`c${n+B_N}`).style.display = "block";
-            $(`c${n}`).style.display = "none";
+        }else{
+            let test = context.createImageData(120,120);
+            let pixels = test.data;
+            for(let i=0; i<=G_N**2; i++){
+                pixels[4*i+3] = arr[i+1];
+            }    
+            context.putImageData(test,0,0);
         }
+        $(`c${n+B_N}`).style.display = "block";
+        $(`c${n}`).style.display = "none";
         $(`l${n}`).style.background = "#00AA00";
     }
     else{
@@ -198,21 +204,19 @@ function writer(){
 
 function save(){
     let str = [];
-    for(let i=0; i<B_N; i++){
-        let d = print(i);
-        DATA.push(Array.from(d));
+        for(let i=0; i<B_N; i++){
+            let d = print(i);
+            DATA.push(Array.from(d));
+        }       
 
-        // str.push(`<tr><td>${d[0]}</td>`);
-        // for(let j=1; j<=G_N**2; j++){
-        //     str.push(`<td>${d[j]}</td>`);
-        // }
-        // str.push(`</tr>`);
+    $("info").innerHTML = `Session name: ${localStorage.uuid}, sets of ${B_S.join("")} recorded: ${DATA.length/B_N}`
+
+    try {
+        localStorage.data = JSON.stringify(DATA);
     }
-
-    // $("data").innerHTML += str.join("");
-    $("info").innerHTML = `Session name: ${localStorage.uuid}, sets recorded: ${DATA.length/B_N}`
-
-    localStorage.data = JSON.stringify(DATA);
+    catch (e) {
+        alert("Session storage is full! Please reset session before saving.")
+    }
 }
 
 let showData = false;
@@ -235,7 +239,7 @@ function download(){
     var encodedUri = encodeURI(csvContent);
     var link = document.createElement("a");
     link.setAttribute("href", encodedUri);
-    link.setAttribute("download", `${localStorage.uuid}(${DATA.length/B_N}sets)-handwritten`);
+    link.setAttribute("download", `${localStorage.uuid}-${B_S.join("")}(${DATA.length/B_N}sets)`);
     document.body.appendChild(link); 
 
     link.click(); 
