@@ -73,7 +73,10 @@ function session(clear){
         DATA = [];
         localStorage.clear();
         localStorage.uuid = crypto.randomUUID().substring(32) + "-" + prompt("Hello! Enter a memorable name to identify your dataset:");
+        let oldSet = B_S;
+        console.log(oldSet)
         B_S = prompt("Enter your character set (e.g. 012345 or ABCD):").split('');
+        if(B_S.toString() != oldSet.toString()){populate()}
         localStorage.set = JSON.stringify(B_S);
     }
     else{
