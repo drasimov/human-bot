@@ -1,4 +1,4 @@
-const G_N = 4;
+const G_N = 120;
 const G_D = 120/G_N;
 const RAW = G_N==120 ? 1:0;
 
