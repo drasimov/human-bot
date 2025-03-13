@@ -210,7 +210,7 @@ function writer(){
 function save(){
     for(let i=0; i<B_N; i++){
         let d = print(i);
-        DATA.push(Array.from(d));
+        DATA.push(compress0(Array.from(d)));
     }       
 
     $("info").innerHTML = `Session name: ${localStorage.uuid}, sets of ${B_S.join("")} recorded: ${DATA.length/B_N}`
@@ -264,7 +264,7 @@ function updateData(){
     for(let c=0; c<B_N; c++){
         clean(c+2*B_N);
         context = $(`c${c+2*B_N}`).getContext('2d');
-        arr = DATA[($("dataAccess").value-1)*B_N+c];
+        arr = depress0(DATA[($("dataAccess").value-1)*B_N+c]);
 
         if(RAW){
             test = context.createImageData(120,120);
@@ -289,7 +289,7 @@ function download(){
     let csvContent = "data:text/csv;charset=utf-8,";
 
     DATA.forEach(function(rowArray) {
-        let row = rowArray.join(",");
+        let row = depress0(rowArray.join(","));
         csvContent += row + "\r\n";
     });
 
