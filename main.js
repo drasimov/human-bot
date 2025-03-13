@@ -1,4 +1,4 @@
-const G_N = 120;
+const G_N = 4;
 const G_D = 120/G_N;
 const RAW = G_N==120 ? 1:0;
 
@@ -68,7 +68,7 @@ function print(n){
 
     // TODO: optimize this
     let info = [];
-    arr[0] = n;
+    arr[0] = B_S[n];
     if(RAW){
         info=context.getImageData(0,0,120,120).data;
         for(let i=0; i<G_N**2; i++){
@@ -289,7 +289,7 @@ function download(){
     let csvContent = "data:text/csv;charset=utf-8,";
 
     DATA.forEach(function(rowArray) {
-        let row = depress0(rowArray.join(","));
+        let row = depress0(rowArray).join(",");
         csvContent += row + "\r\n";
     });
 
