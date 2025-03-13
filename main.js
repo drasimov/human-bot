@@ -302,3 +302,42 @@ function download(){
     link.click(); 
     // TODO: file handle with Blob
 }
+
+function compress0(arr){
+    let n = [];
+    let i0 = 0;
+    for(let i=0; i<arr.length; i++){
+        if(arr[i] == 0){
+            i0++;
+        }
+        else if(i0 > 0){
+            n.push(-i0);
+            i0 = 0;
+            n.push(arr[i]);
+        }
+        else{
+            n.push(arr[i]);
+        }
+    }
+    if (i0 > 0) {
+        n.push(-i0);
+    }
+    return n;
+}
+
+function depress0(arr){
+    let n = new Uint8Array(1+G_N**2);
+    let i0 = 0;
+    for(let i=0; i<arr.length; i++){
+        if(arr[i] > 0){
+            n[i0] = arr[i];
+            i0++;
+        }
+        else{
+            for(let j=0; j>arr[i]; j--){ 
+                i0++;
+            }
+        }
+    }
+    return n;
+}
