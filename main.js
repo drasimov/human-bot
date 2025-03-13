@@ -334,9 +334,7 @@ function depress0(arr){
             i0++;
         }
         else{
-            for(let j=0; j>arr[i]; j--){ 
-                i0++;
-            }
+            i0 -= arr[i];
         }
     }
     return n;
