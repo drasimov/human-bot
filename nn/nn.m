@@ -25,11 +25,11 @@ NOTES = "Softmax/Quad/NoTricks";
 
 %% ----------- read data ------------
 tic
-ABCDEF = letters("ABCDEF\\ABCDEF.csv", 'ABCDEF', N_SETS);
-GHIJK = letters("GHIJK\\GHIJK.csv", 'GHIJK', N_SETS);
-LMNOP = letters("LMNOP\\LMNOP.csv", 'LMNOP', N_SETS);
-QRSTU = letters("QRSTU\\QRSTU.csv", 'QRSTU', N_SETS);
-VWXYZ = letters("VWXYZ\\VWXYZ.csv", 'VWXYZ', N_SETS);
+ABCDEF = letters("ABCDEF.csv", 'ABCDEF', N_SETS);
+GHIJK = letters("GHIJK.csv", 'GHIJK', N_SETS);
+LMNOP = letters("LMNOP.csv", 'LMNOP', N_SETS);
+QRSTU = letters("QRSTU.csv", 'QRSTU', N_SETS);
+VWXYZ = letters("VWXYZ.csv", 'VWXYZ', N_SETS);
 DATA = [ABCDEF; GHIJK; LMNOP; QRSTU; VWXYZ];
 DATA = sortrows(DATA, 1:26, 'descend');
 
@@ -72,7 +72,7 @@ z = cell(1,N_LAYERS);
 for i = 2:N_LAYERS
     n_in = N_CELLS(i-1);
     scale = 1/sqrt(n_in + 1);
-    b{i-1} = randn(N_CELLS(i),1)*scale;
+    b{i-1} = randn(N_CELLS(i),1);
     w{i-1} = randn(N_CELLS(i),N_CELLS(i-1))*scale;
 end
 
