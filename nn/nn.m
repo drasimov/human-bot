@@ -11,10 +11,16 @@ N_EPOCHS = 300;
 R_LEARNINIT = .01;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .999;
+
 % valid options: sigmoid, softmax
 global T_ACT;
 T_ACT = "sigmoid";
-% state activation function, cost, other tricks
+
+% valid options: quadratic, cross-entropy
+global T_COST;
+T_COST = "quadratic";
+
+% state any other tricks (e.g. regularization
 NOTES = "Softmax/Quad/NoTricks";
 
 %% ----------- read data ------------
@@ -82,13 +88,13 @@ ytrain = zeros(1,N_EPOCHS+1);
 ytest = zeros(1,N_EPOCHS+1);
 
 [ycost(1), ytrain(1), ytest(1)] = testnetwork(a, z, TEST, TRAIN, w, b);
-fprintf('Calculated random cost in %3.2fs, C = %3.6f, %3.2f%%\n', toc, ycost(1), ytrain(1)*100);
+fprintf('Calculated random cost in %3.2fs, C = %3.6f, %3.2f%%, %3.2f%%\n', toc, ycost(1), ytrain(1)*100, ytest(1)*100);
 
 for e = 1:N_EPOCHS
     tic
     [a, z, w, b] = epoch(a, z, TRAIN, w, b, R_LEARN);
     [ycost(e+1), ytrain(e+1), ytest(e+1)] = testnetwork(a, z, TEST, TRAIN, w, b);
-    fprintf('Training epoch %i took %3.2fs, C = %3.6f, %3.2f%%\n', e, toc, ycost(e+1), ytrain(e+1)*100)
+    fprintf('Training epoch %i took %3.2fs, C = %3.6f, %3.2f%%, %3.2f%%\n', e, toc, ycost(e+1), ytrain(e+1)*100, ytest(e+1)*100)
 
     R_LEARN = R_LEARNDEP*R_LEARN;
 end
@@ -98,7 +104,7 @@ clf
 hold on
 plot(x, ytrain)
 plot(x, ytest)
-title(strcat("Model Accuracy (",num2str(D_SIZE),"x",num2str(D_SIZE)," ",mat2str(N_CELLS)," ",num2str(R_LEARNINIT),"*",num2str(R_LEARNDEP)," ",NOTES,")"))
+title(strcat("Model Accuracy (",num2str(D_SIZE),"x",num2str(D_SIZE)," ",mat2str(N_CELLS)," ",num2str(R_LEARNINIT),"*",num2str(R_LEARNDEP)," ",T_ACT,"/",T_COST,"/",NOTES,")"))
 legend('Train','Test','Location','SouthEast');
 pause
 

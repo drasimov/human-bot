@@ -1,4 +1,5 @@
 function [c, atrain, atest] = testnetwork(a, z, test, train, w, b);
+    global T_COST;
     c = 0;
     for n = 1:size(train,1)
         z{1} = train(n,27:end)';
@@ -6,7 +7,7 @@ function [c, atrain, atest] = testnetwork(a, z, test, train, w, b);
         for i = 1:(length(a)-1)
             [a{i+1}, z{i+1}] = feedforward(w{i}, b{i}, a{i});
         end
-        c = c + cost(train(n,1:26)', a{length(a)});
+        c = c + cost(train(n,1:26)', a{length(a)},T_COST,false);
     end
     c = c/size(train,1);
 
