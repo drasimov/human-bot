@@ -21,7 +21,7 @@ global T_COST;
 T_COST = "quadratic";
 
 % state any other tricks (e.g. regularization
-NOTES = "NoTricks";
+NOTES = "No Tricks";
 
 %% ----------- read data ------------
 tic
