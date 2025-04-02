@@ -12,9 +12,10 @@ R_LEARNINIT = .01;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .999;
 % valid options: sigmoid, softmax
+global T_ACT;
 T_ACT = "sigmoid";
 % state activation function, cost, other tricks
-NOTES = "Sig/Quad/NoTricks";
+NOTES = "Softmax/Quad/NoTricks";
 
 %% ----------- read data ------------
 tic
