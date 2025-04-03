@@ -4,9 +4,9 @@ function a = act(z, type, derivative)
             case "sigmoid"
                 a = z.*(1-z);
             case "softmax"
-                a = ones(length(z),1);
+                a = 1;
             case "relu"
-                a = z>0;
+                a = z>0./a.*a
         end
     else
         switch type
