@@ -8,7 +8,7 @@ N_SETS = 200;
 N_CELLS = [D_SIZE.^2, 200, 26];
 N_LAYERS = length(N_CELLS);
 N_EPOCHS = 300;
-R_LEARNINIT = .01;
+R_LEARNINIT = .005;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .999;
 
@@ -20,8 +20,12 @@ T_ACT = "sigmoid";
 global T_COST;
 T_COST = "quadratic";
 
+% set regularization parameter
+global lambda;
+lambda = 10;
+
 % state any other tricks (e.g. regularization
-NOTES = "Softmax/Quad/NoTricks";
+NOTES = "Softmax/Quad/Regularization w/ parameter:" + lambda;
 
 %% ----------- read data ------------
 tic
@@ -59,6 +63,9 @@ for i = 1:26
     end
 end
 TRAIN = TRAIN(randperm(size(TRAIN, 1)), :);
+global N_TRAIN;
+N_TRAIN = length(TRAIN);
+
 
 fprintf('Read and processed %i sets of letters in %3.2fs\n', N_SETS, toc)
 
