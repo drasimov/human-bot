@@ -10,14 +10,14 @@ function c = cost(x,y,type,derivative,w)
             case "quadratic"
                 c = x-y;
             case "cross-entropy"
-                c = -y./x + (1-y)./(1-x);
+                c = act(x, "sigmoid", false)-y;
         end
     else
         switch type
             case "quadratic"
                 c = sum((x-y).^2)/2;
             case "cross-entropy"
-                c = -sum(x.*log(y) + (1-x).*log(1-y));
+                c = -sum(y.*log(x) + (1-y).*log(1-x));
         end
         c = c + lambda/(2*N_TRAIN)*sum_weight;
     end

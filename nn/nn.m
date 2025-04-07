@@ -10,11 +10,13 @@ N_LAYERS = length(N_CELLS);
 N_EPOCHS = 300;
 R_LEARNINIT = .005;
 R_LEARN = R_LEARNINIT;
-R_LEARNDEP = .999;
+R_LEARNDEP = .995;
 
-% valid options: sigmoid, softmax
+% valid options: sigmoid, softmax, relu
 global T_ACT;
 T_ACT = "sigmoid";
+global T_ACTFINAL;
+T_ACTFINAL = "softmax";
 
 % valid options: quadratic, cross-entropy
 global T_COST;
@@ -25,7 +27,11 @@ global lambda;
 lambda = 10;
 
 % state any other tricks (e.g. regularization
+<<<<<<< HEAD
 NOTES = "Softmax/Quad/Regularization w/ parameter:" + lambda;
+=======
+NOTES = "No Tricks";
+>>>>>>> 4020a011378051796926d420729d981970af60c6
 
 %% ----------- read data ------------
 tic
@@ -111,7 +117,7 @@ clf
 hold on
 plot(x, ytrain)
 plot(x, ytest)
-title(strcat("Model Accuracy (",num2str(D_SIZE),"x",num2str(D_SIZE)," ",mat2str(N_CELLS)," ",num2str(R_LEARNINIT),"*",num2str(R_LEARNDEP)," ",T_ACT,"/",T_COST,"/",NOTES,")"))
+title(strcat("Model Accuracy (",num2str(D_SIZE),"x",num2str(D_SIZE)," ",mat2str(N_CELLS)," ",num2str(R_LEARNINIT),"*",num2str(R_LEARNDEP)," ",T_ACT,T_ACTFINAL,"/",T_COST,"/",NOTES,")"))
 legend('Train','Test','Location','SouthEast');
 pause
 
