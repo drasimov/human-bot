@@ -27,11 +27,7 @@ global lambda;
 lambda = 10;
 
 % state any other tricks (e.g. regularization
-<<<<<<< HEAD
 NOTES = "Softmax/Quad/Regularization w/ parameter:" + lambda;
-=======
-NOTES = "No Tricks";
->>>>>>> 4020a011378051796926d420729d981970af60c6
 
 %% ----------- read data ------------
 tic
