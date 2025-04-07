@@ -1,4 +1,4 @@
-function c = cost(x,y,type,derivative,w)
+function c = cost(x,y,type,derivative)
     if derivative
         switch type
             case "quadratic"
