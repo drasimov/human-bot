@@ -20,7 +20,7 @@ T_ACTFINAL = "softmax";
 
 % valid options: quadratic, cross-entropy
 global T_COST;
-T_COST = "quadratic";
+T_COST = "cross-entropy";
 
 % set regularization parameter
 global lambda;
@@ -118,17 +118,17 @@ legend('Train','Test','Location','SouthEast');
 pause
 
 %% -- make fun of the network? --
-for n = 1:size(TRAIN,1)
-    z{1} = TRAIN(n,27:end)';
-    a{1} = TRAIN(n,27:end)';
-    for i = 1:(length(a)-1)
-        [a{i+1}, z{i+1}] = feedforward(w{i}, b{i}, a{i});
-    end
+%for n = 1:size(TRAIN,1)
+%    z{1} = TRAIN(n,27:end)';
+%    a{1} = TRAIN(n,27:end)';
+%    for i = 1:(length(a)-1)
+%        [a{i+1}, z{i+1}] = feedforward(w{i}, b{i}, a{i});
+%    end
 
-    [V, I] = max(a{length(a)});
-    if I ~= find(TRAIN(n,1:26))
-        showLetter(n,TRAIN,D_SIZE);
-        fprintf('Network thought a %c was a %c\n', char(find(TRAIN(n,1:26))+64), char(I+64))
-        pause
-    end
-end
+%    [V, I] = max(a{length(a)});
+%    if I ~= find(TRAIN(n,1:26))
+%        showLetter(n,TRAIN,D_SIZE);
+%        fprintf('Network thought a %c was a %c\n', char(find(TRAIN(n,1:26))+64), char(I+64))
+%        pause
+%    end
+%end
