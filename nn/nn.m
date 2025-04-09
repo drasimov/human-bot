@@ -7,8 +7,8 @@ D_SIZE = 8;
 N_SETS = 200;
 N_CELLS = [D_SIZE.^2, 200, 26];
 N_LAYERS = length(N_CELLS);
-N_EPOCHS = 300;
-R_LEARNINIT = .001;
+N_EPOCHS = 500;
+R_LEARNINIT = .02;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .995;
 
@@ -16,15 +16,15 @@ R_LEARNDEP = .995;
 global T_ACT;
 T_ACT = "sigmoid";
 global T_ACTFINAL;
-T_ACTFINAL = "softmax";
+T_ACTFINAL = "sigmoid";
 
 % valid options: quadratic, cross-entropy
 global T_COST;
-T_COST = "quadratic";
+T_COST = "cross-entropy";
 
 % set regularization parameter
 global lambda;
-lambda = 10;
+lambda = 5;
 
 % state any other tricks (e.g. regularization
 NOTES = "Softmax/Quad/Regularization w/ parameter:" + lambda;

@@ -4,7 +4,7 @@ function c = cost(x,y,type,derivative,w)
             case "quadratic"
                 c = x-y;
             case "cross-entropy"
-                c = act(x, "sigmoid", false)-y;
+                c = -y./x + (1-y)./(1-x);
         end
     else
         switch type
