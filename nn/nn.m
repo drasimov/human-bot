@@ -7,10 +7,13 @@ D_SIZE = 8;
 N_SETS = 200;
 N_CELLS = [D_SIZE.^2, 200, 26];
 N_LAYERS = length(N_CELLS);
-N_EPOCHS = 500;
-R_LEARNINIT = .02;
+N_EPOCHS = 300;
+R_LEARNINIT = .005;
+>>>>>>> db88934452742420d36da8b808d13fd3bce3eb46
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .995;
+N_BATCHES = 70;
+BATCH_SIZE = 50;
 
 % valid options: sigmoid, softmax, relu
 global T_ACT;
@@ -41,7 +44,7 @@ DATA = sortrows(DATA, 1:26, 'descend');
 
 DATA_S = zeros(26*N_SETS,26+D_SIZE^2);
 DATA_S(:,1:26) = DATA(:,1:26);
-for n = 1:N_SETS*26;
+for n = 1:N_SETS*26
     vec = reshape(DATA(n,27:14426),[120,120]);
     for i = 0:D_SIZE-1
         for j = 1:D_SIZE
@@ -69,10 +72,13 @@ global N_TRAIN;
 N_TRAIN = length(TRAIN);
 
 
-fprintf('Read and processed %i sets of letters in %3.2fs\n', N_SETS, toc)
+fprintf('Read and processed %i sets of letters in %3 .2fs\n', N_SETS, toc)
 
 %% -------- initialization ----------
 tic
+
+TRAIN_BATCHES = find_batches(TRAIN, BATCH_SIZE, N_BATCHES);
+
 b = cell(1,N_LAYERS-1);
 w = cell(1,N_LAYERS-1);
 a = cell(1,N_LAYERS);
@@ -101,10 +107,13 @@ fprintf('Calculated random cost in %3.2fs, C = %3.6f, %3.2f%%, %3.2f%%\n', toc, 
 
 for e = 1:N_EPOCHS
     tic
-    [a, z, w, b] = epoch(a, z, TRAIN, w, b, R_LEARN);
+    for n = 1:N_BATCHES
+        T_BATCH = TRAIN_BATCHES{1,n};
+        [a, z, w, b] = batched_epoch(a, z, T_BATCH, w, b, R_LEARN);
+    end
     [ycost(e+1), ytrain(e+1), ytest(e+1)] = testnetwork(a, z, TEST, TRAIN, w, b);
     fprintf('Training epoch %i took %3.2fs, C = %3.6f, %3.2f%%, %3.2f%%\n', e, toc, ycost(e+1), ytrain(e+1)*100, ytest(e+1)*100)
-
+    TRAIN_BATCHES = find_batches(TRAIN, BATCH_SIZE, N_BATCHES);
     R_LEARN = R_LEARNDEP*R_LEARN;
 end
 
@@ -118,17 +127,17 @@ legend('Train','Test','Location','SouthEast');
 pause
 
 %% -- make fun of the network? --
-for n = 1:size(TRAIN,1)
-    z{1} = TRAIN(n,27:end)';
-    a{1} = TRAIN(n,27:end)';
-    for i = 1:(length(a)-1)
-        [a{i+1}, z{i+1}] = feedforward(w{i}, b{i}, a{i});
-    end
-
-    [V, I] = max(a{length(a)});
-    if I ~= find(TRAIN(n,1:26))
-        showLetter(n,TRAIN,D_SIZE);
-        fprintf('Network thought a %c was a %c\n', char(find(TRAIN(n,1:26))+64), char(I+64))
-        pause
-    end
-end
+% for n = 1:size(TRAIN,1)
+%     z{1} = TRAIN(n,27:end)';
+%     a{1} = TRAIN(n,27:end)';
+%     for i = 1:(length(a)-1)
+%         [a{i+1}, z{i+1}] = feedforward(w{i}, b{i}, a{i});
+%     end
+% 
+%     [V, I] = max(a{length(a)});
+%     if I ~= find(TRAIN(n,1:26))
+%         showLetter(n,TRAIN,D_SIZE);
+%         fprintf('Network thought a %c was a %c\n', char(find(TRAIN(n,1:26))+64), char(I+64))
+%         pause
+%     end
+% end
