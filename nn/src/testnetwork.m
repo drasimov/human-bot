@@ -6,7 +6,7 @@ function [c, atrain, atest] = testnetwork(a, z, test, train, w, b);
         z{1} = train(n,27:end)';
         a{1} = train(n,27:end)';
         [a,z] = feedforward(w,b,a,z);
-        c = c + cost(a{length(a)},train(n,1:26)',T_COST,false,w);
+        c = c + cost(a{length(a)},train(n,1:26)',T_COST,false);
     end
     c = sum(c)/size(train,1)/length(c);
 
