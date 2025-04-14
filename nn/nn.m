@@ -8,11 +8,11 @@ N_SETS = 200;
 N_CELLS = [D_SIZE.^2, 200, 26];
 N_LAYERS = length(N_CELLS);
 N_EPOCHS = 300;
-R_LEARNINIT = .005;
+R_LEARNINIT = .01;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .995;
-N_BATCHES = 26;
-BATCH_SIZE = 7
+N_BATCHES = 200;
+BATCH_SIZE = 1;
 
 % valid options: sigmoid, softmax, relu
 global T_ACT;
