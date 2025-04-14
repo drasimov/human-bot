@@ -11,8 +11,8 @@ N_EPOCHS = 300;
 R_LEARNINIT = .005;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .995;
-N_BATCHES = 26;
-BATCH_SIZE = 7
+N_BATCHES = 70;
+BATCH_SIZE = 50;
 
 % valid options: sigmoid, softmax, relu
 global T_ACT;
@@ -67,8 +67,6 @@ for i = 1:26
     end
 end
 TRAIN = TRAIN(randperm(size(TRAIN, 1)), :);
-SHIFTDATA = SHIFTDATA(D_SIZE,TRAIN);
-TRAIN = [TRAIN; SHIFTDATA];
 global N_TRAIN;
 N_TRAIN = length(TRAIN);
 
