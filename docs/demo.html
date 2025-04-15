@@ -8,23 +8,7 @@
     <body>
         <span class="title">human-bot </span><span class="desc">watch a neural network attempt to recognize a letter in real-time</span>
         <hr>
-        <div class="box-label"><span>Writing box</span></div>
-        <div id="all" class="box"></div>
-        <div class="box-wrap">
-            <div class="box-label"><span>Info box</span></div>
-            <!-- TODO: Import from csv -->
-            <div class="box"><span id="info"></span> <button onClick="download(); session(true)">Reset Session</button></div>
-        </div>
-        <div class="box-wrap">
-            <div class="box-label"><span>Control box</span></div>
-            <div id="control" class="box"><button onClick="writer()">Verify</button></div>    
-        </div>
-        <div class="box-label"><span>Data box</span></div>
-        <div class="box box-data">
-            This table shows all the data you have collected. <button onClick="download()">Download as csv</button> <button id="showDataLabel" onClick="toggleData()">Show Data</button>
-            <div id="dataControls">Viewing set <input onInput="updateData()" id="dataAccess" type="number" min="0" max="0" step="1"> <span id="dataInfo"></span>
-            <div id="data"></div>
-        </div>
+        <canvas id="c1" height="120px" width="120px"></canvas>
         <script src="main.js"></script>
     </body>
 </html>
