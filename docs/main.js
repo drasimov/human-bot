@@ -15,10 +15,12 @@ let write = false;
 // const canvas = document.getElementById('sketchpad');
 // const context = canvas.getContext('2d');
 
-window.addEventListener('load', function () {
-    session(false);
-    populate();
-}, false);
+if(window.PAGE == "gen"){
+    window.addEventListener('load', function () {
+        session(false);
+        populate();
+    }, false);    
+}
 
 function $(x){
     return document.getElementById(x);

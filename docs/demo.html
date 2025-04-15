@@ -6,11 +6,8 @@
         <title>Human Bot Project</title>
     </head>
     <body>
-        <span class="title">human-bot </span><span class="desc">where you and your friends generate neural network training data</span>
+        <span class="title">human-bot </span><span class="desc">watch a neural network attempt to recognize a letter in real-time</span>
         <hr>
-        <p>Hello Dear Volunteer (or Voluntold),</p>
-        <p>The characters you handwrite here will be processed into a form easier for a <a href="http://neuralnetworksanddeeplearning.com/">neural network</a> to understand. Since each character you write is also labeled with what character it is supposed to represent, this data can be used to "teach" a neural network how to recognize handwritten characters. Eventually, this neural network should be able to recognize handwritten digits it hasn't seen before at some level of accuracy. Thus, thank you for your contribution to our neural network.</p>
-        <br>
         <div class="box-label"><span>Writing box</span></div>
         <div id="all" class="box"></div>
         <div class="box-wrap">
@@ -28,7 +25,6 @@
             <div id="dataControls">Viewing set <input onInput="updateData()" id="dataAccess" type="number" min="0" max="0" step="1"> <span id="dataInfo"></span>
             <div id="data"></div>
         </div>
-        <script> window.PAGE = "gen";</script>
         <script src="main.js"></script>
     </body>
 </html>
