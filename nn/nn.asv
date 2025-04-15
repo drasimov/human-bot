@@ -5,20 +5,20 @@ addpath('src/');
 % ----- set network parameters -----
 D_SIZE = 8;
 N_SETS = 200;
-N_CELLS = [D_SIZE.^2, 200, 200, 26];
+N_CELLS = [D_SIZE.^2, 200, 26];
 N_LAYERS = length(N_CELLS);
 N_EPOCHS = 300;
-R_LEARNINIT = .01;
+R_LEARNINIT = .005;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .995;
-N_BATCHES = 200;
-BATCH_SIZE = 1;
+N_BATCHES = 70;
+BATCH_SIZE = 50;
 
 % valid options: sigmoid, softmax, relu
 global T_ACT;
 T_ACT = "sigmoid";
 global T_ACTFINAL;
-T_ACTFINAL = "softmax";
+T_ACTFINAL = "sigmoid";
 
 % valid options: quadratic, cross-entropy
 global T_COST;
@@ -26,7 +26,7 @@ T_COST = "cross-entropy";
 
 % set regularization parameter
 global lambda;
-lambda = 500;
+lambda = 5;
 
 % state any other tricks (e.g. regularization
 NOTES = "Softmax/Quad/Regularization w/ parameter:" + lambda;
@@ -52,7 +52,6 @@ for n = 1:N_SETS*26
             DATA_S(n,26+D_SIZE*i+j) = mean(mean(vec(ix:ix+120/D_SIZE-1,iy:iy+120/D_SIZE-1)));
         end
     end
-    DATA_S(n,27:end) = center(DATA_S(n,27:end),D_SIZE);
 end
 
 TRAIN = zeros(0.9*N_SETS*26,D_SIZE^2+26);
@@ -68,8 +67,6 @@ for i = 1:26
     end
 end
 TRAIN = TRAIN(randperm(size(TRAIN, 1)), :);
-SHIFTDATA = SHIFTDATA(D_SIZE,TRAIN);
-TRAIN = [TRAIN; SHIFTDATA];
 global N_TRAIN;
 N_TRAIN = length(TRAIN);
 
@@ -109,14 +106,13 @@ fprintf('Calculated random cost in %3.2fs, C = %3.6f, %3.2f%%, %3.2f%%\n', toc, 
 
 for e = 1:N_EPOCHS
     tic
-    % for n = 1:N_BATCHES
-    %     T_BATCH = TRAIN_BATCHES{1,n};
-    %     [a, z, w, b] = batched_epoch(a, z, T_BATCH, w, b, R_LEARN);
-    % end
-    [a, z, w, b] = epoch(a, z, TRAIN, w, b, R_LEARN);
+    for n = 1:N_BATCHES
+        T_BATCH = TRAIN_BATCHES{1,n};
+        [a, z, w, b] = batched_epoch(a, z, T_BATCH, w, b, R_LEARN);
+    end
     [ycost(e+1), ytrain(e+1), ytest(e+1)] = testnetwork(a, z, TEST, TRAIN, w, b);
     fprintf('Training epoch %i took %3.2fs, C = %3.6f, %3.2f%%, %3.2f%%\n', e, toc, ycost(e+1), ytrain(e+1)*100, ytest(e+1)*100)
-    % TRAIN_BATCHES = find_batches(TRAIN, BATCH_SIZE, N_BATCHES);
+    TRAIN_BATCHES = find_batches(TRAIN, BATCH_SIZE, N_BATCHES);
     R_LEARN = R_LEARNDEP*R_LEARN;
 end
 
