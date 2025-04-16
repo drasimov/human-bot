@@ -1,5 +1,7 @@
 clear all
 addpath('simple/');
+d_size = 8;
+n_set = 200;
 m = 4; % number of batches per epoch
 num_epoch = 300;
 eta_start = 0.005;

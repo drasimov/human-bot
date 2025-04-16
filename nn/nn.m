@@ -3,11 +3,11 @@ rng("default")
 addpath('src/');
 
 % ----- set network parameters -----
-D_SIZE = 8;
+D_SIZE = 20;
 N_SETS = 200;
 N_CELLS = [D_SIZE.^2, 200, 26];
 N_LAYERS = length(N_CELLS);
-N_EPOCHS = 300;
+N_EPOCHS = 600;
 R_LEARNINIT = .01;
 R_LEARN = R_LEARNINIT;
 R_LEARNDEP = .995;
@@ -67,8 +67,9 @@ for i = 1:26
     end
 end
 TRAIN = TRAIN(randperm(size(TRAIN, 1)), :);
-SHIFTDATA = SHIFTDATA(D_SIZE,TRAIN);
-TRAIN = [TRAIN; SHIFTDATA];
+RIGHTSHIFTDATA = RIGHTSHIFTDATA(D_SIZE,TRAIN);
+LEFTSHIFTDATA = LEFTSHIFTDATA(D_SIZE,TRAIN);
+TRAIN = [TRAIN; RIGHTSHIFTDATA; LEFTSHIFTDATA];
 global N_TRAIN;
 N_TRAIN = length(TRAIN);
 
